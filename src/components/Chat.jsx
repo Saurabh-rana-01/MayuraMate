@@ -487,7 +487,7 @@ const Chat = ({ user }) => {
             }
         } catch (err) {
             console.error("Error sending message:", err);
-            setNewMessage(messageToSend); // Restore message if send fails
+            setNewMessage(capturedMessage); // Restore message if send fails
             alert("Error sending message. Please try again.");
         }
     };

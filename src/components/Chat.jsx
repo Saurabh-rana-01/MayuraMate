@@ -176,6 +176,21 @@ const Chat = ({ user }) => {
         const file = e.target.files[0];
         if (!file || !selectedUser) return;
 
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            alert('Please select an image file.');
+            if (fileInputRef.current) fileInputRef.current.value = null;
+            return;
+        }
+
+        // Validate file size (e.g., max 5MB)
+        const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+        if (file.size > maxSize) {
+            alert('File size exceeds 5MB limit.');
+            if (fileInputRef.current) fileInputRef.current.value = null;
+            return;
+        }
+
         setIsUploading(true);
         try {
             const imageUrl = await uploadImage(file);

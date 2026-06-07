@@ -794,42 +794,30 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.video-placeholder {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
 }
 
-.placeholder-content {
-  text-align: center;
+.video-placeholder.whatsapp-bg {
+  background: #111b21;
 }
 
-.avatar-placeholder {
-  width: 80px;
-  height: 80px;
+.avatar-placeholder.main-avatar {
+  width: 140px;
+  height: 140px;
+  background: #2a3942;
+  font-size: 64px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #43c960 0%, #36a04e 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 36px;
-  font-weight: bold;
-  margin: 0 auto 16px;
-  box-shadow: 0 4px 16px rgba(67, 201, 96, 0.4);
+  color: #fff;
+  transition: transform 0.3s ease;
 }
 
-.placeholder-content p {
-  color: #999;
-  font-size: 14px;
-  margin: 0;
+.status-overlay {
+  margin-top: 20px;
+  color: #8696a0;
+  font-size: 16px;
+  font-weight: 300;
 }
 
 .local-video-wrapper {

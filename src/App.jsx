@@ -32,44 +32,48 @@ function App() {
           localStorage.setItem('device_session_id', currentSessionId);
         }
 
-        // User is logged in
-        const userRef = doc(db, "users", u.uid);
-        const userSnap = await getDoc(userRef);
+        try {
+          // User is logged in
+          const userRef = doc(db, "users", u.uid);
+          const userSnap = await getDoc(userRef);
 
-        if (!userSnap.exists()) {
-          // Create new user doc if it doesn't exist
-          await setDoc(userRef, {
-            uid: u.uid,
-            email: u.email,
-            displayName: u.displayName || u.email.split('@')[0],
-            photoURL: u.photoURL || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
-            isOnline: true,
-            createdAt: serverTimestamp(),
-            lastSeen: serverTimestamp(),
-            activeSessionId: currentSessionId
-          });
-        } else {
-          // Update existing user to be online and set active session
-          await updateDoc(userRef, {
-            isOnline: true,
-            activeSessionId: currentSessionId
-          });
-        }
+          if (!userSnap.exists()) {
+            // Create new user doc if it doesn't exist
+            await setDoc(userRef, {
+              uid: u.uid,
+              email: u.email,
+              displayName: u.displayName || u.email.split('@')[0],
+              photoURL: u.photoURL || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
+              isOnline: true,
+              createdAt: serverTimestamp(),
+              lastSeen: serverTimestamp(),
+              activeSessionId: currentSessionId
+            });
+          } else {
+            // Update existing user to be online and set active session
+            await updateDoc(userRef, {
+              isOnline: true,
+              activeSessionId: currentSessionId
+            });
+          }
 
-        // Listen for changes to the user document to detect logins on other devices
-        // We add a small delay to allow the updateDoc to propagate and avoid race conditions with initial load
-        setTimeout(() => {
-          snapshotUnsubscribe = onSnapshot(userRef, (doc) => {
-            if (doc.exists()) {
-              const data = doc.data();
-              // If the active session ID in DB is different from ours, logout
-              if (data.activeSessionId && data.activeSessionId !== currentSessionId) {
-                console.log("Session mismatch detected. Logging out.", data.activeSessionId, currentSessionId);
-                // auth.signOut();
+          // Listen for changes to the user document to detect logins on other devices
+          // We add a small delay to allow the updateDoc to propagate and avoid race conditions with initial load
+          setTimeout(() => {
+            snapshotUnsubscribe = onSnapshot(userRef, (doc) => {
+              if (doc.exists()) {
+                const data = doc.data();
+                // If the active session ID in DB is different from ours, logout
+                if (data.activeSessionId && data.activeSessionId !== currentSessionId) {
+                  console.log("Session mismatch detected. Logging out.", data.activeSessionId, currentSessionId);
+                  // auth.signOut();
+                }
               }
-            }
-          });
-        }, 1000);
+            });
+          }, 1000);
+        } catch (err) {
+          console.error("Error setting up user session:", err);
+        }
 
         setUser(u);
       } else {

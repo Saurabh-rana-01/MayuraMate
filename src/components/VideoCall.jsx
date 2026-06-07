@@ -563,25 +563,25 @@ const VideoCall = React.forwardRef(({ user, chatId, recipientId, isCaller, onClo
                         autoPlay
                         playsInline
                         muted={isSwapped}
-                        className="remote-video"
+                        className="remote-video full-screen-media"
                     />
                     {isSwapped && (isVideoOff || isRemoteVideoOff) && (
-                        <div className="video-placeholder">
+                        <div className="video-placeholder whatsapp-bg">
                             <div className="placeholder-content">
-                                <div className="avatar-placeholder" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
-                                    {isRemoteVideoOff && !isVideoOff ? (recipientId?.charAt(0)?.toUpperCase() || '?') : 'You'}
+                                <div className="avatar-placeholder main-avatar">
+                                    {isRemoteVideoOff && !isVideoOff ? (recipientId?.charAt(0)?.toUpperCase() || '?') : (user?.displayName?.charAt(0)?.toUpperCase() || 'Y')}
                                 </div>
-                                <p>{isRemoteVideoOff && !isVideoOff ? 'User Camera off' : 'Camera off'}</p>
+                                <p className="status-overlay">{isRemoteVideoOff && !isVideoOff ? 'User Camera off' : 'Camera off'}</p>
                             </div>
                         </div>
                     )}
                     {!isSwapped && isRemoteVideoOff && (
-                        <div className="video-placeholder">
+                        <div className="video-placeholder whatsapp-bg">
                             <div className="placeholder-content">
-                                <div className="avatar-placeholder">
+                                <div className="avatar-placeholder main-avatar">
                                     {recipientId?.charAt(0)?.toUpperCase() || '?'}
                                 </div>
-                                <p>User Camera off</p>
+                                <p className="status-overlay">Camera off</p>
                             </div>
                         </div>
                     )}
